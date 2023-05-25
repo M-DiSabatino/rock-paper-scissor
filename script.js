@@ -1,7 +1,26 @@
 // Make a rock/paper/scissor game against computer
 
+
 // Prompt user for his choice
-let playerSelection = prompt('Choose your weapon: rock, paper, scissors.');
+function getPlayerChoice()
+{
+    let playerSelection = prompt('Choose your weapon: rock, paper, scissors.');
+
+    // Lowercase prompted string for comparison
+    playerSelection = playerSelection.toLowerCase();
+
+    // Compare if string is one of the options
+    if (playerSelection === 'rock' || playerSelection === 'paper' || playerSelection === 'scissors')
+    {
+        return playerSelection;
+    }
+
+    // Else ask again for prompt
+    else
+    {
+        prompt('Your weapon is invalid, please choose between rock, paper or scissors.')
+    }
+}
 
 // Get the computer choice
 function getComputerChoice()
@@ -11,65 +30,122 @@ function getComputerChoice()
     let computerSelection = compChoice[Math.floor(Math.random() * 3)];
     return computerSelection;
 }
-let computerSelection = getComputerChoice();
 
 // Compare two choices
 function playRound(playerSelection, computerSelection)
 {
-    playerSelection = playerSelection.toLowerCase();
-    
+    let win = 'win';
+    let lose = 'lose';
+    let draw = 'draw';
+
     // If values are equal it's a draw
-    if (playerSelection === computerSelection)
+    switch (playerSelection)
     {
-        let draw = 'It\'s a draw!';
-        return draw;
-    }
+        case computerSelection : 
+            console.log('It\'s a draw.');
+            return draw;
 
     // If player selects rock
-    else if (playerSelection === 'rock')
-    {
-        if (computerSelection === 'paper')
-        {
-            let lose = 'You lose! Paper beats rock!';
-            return lose;
+        case 'rock' : 
+        {    
+            switch (computerSelection)
+            {
+                case 'paper' :
+                    console.log('Rock loses to paper.');
+                    return lose;
+                case 'scissors' :
+                    console.log('Rock wins against scissors.');
+                    return win;
+            }
         }
-        else (computerSelection === 'scissors')
-        {
-            let win = 'You win! Rock beats scissors!';
-            return win;
-        }
-    }
-
     // If player selects paper
-    else if (playerSelection === 'paper')
-    {
-        if (computerSelection === 'scissors')
+        case 'paper' :
         {
-            let lose = 'You lose! Scissors beats paper!';
-            return lose;
+            switch (computerSelection)
+            { 
+                case 'scissors':
+                    console.log('Paper loses to scissors.');
+                    return lose;
+                case 'rock' :
+                    console.log('Paper wins against rock.');
+                    return win;
+            }
         }
-        else (computerSelection === 'rock')
-        {
-            let win = 'You win! Paper beats rock!';
-            return win;
-        }
-    }
 
     // If player selects scissors
-    else if (playerSelection === 'scissors')
-    {
-        if (computerSelection === 'rock')
+        case 'scissors' :
         {
-            let lose = 'You lose! Rock beats scissors!';
-            return lose;
-        }
-        else (computerSelection === 'paper')
-        {
-            let win = 'You win! Scissors beats paper!';
-            return win;
+            switch (computerSelection)
+            {
+                case 'rock' :
+                    console.log('Scissors lose against rock.');
+                    return lose;
+                case 'paper' :
+                    console.log('Scissors wins against paper.');
+                    return win;
+            }
         }
     }
 }
 
 // Print winner in console
-console.log(playRound(playerSelection, computerSelection));
+//console.log(playRound(playerSelection, computerSelection));
+
+// Add function for best out of 5
+function game()
+{
+    // Get score for two players
+    let scorePlayer = 0; 
+    let scoreComputer = 0;
+    let maxScore = 5;
+
+    // Repeat for 5 rounds
+    for (let i = 0; i < maxScore; i++)
+    {
+        let playerSelection = getPlayerChoice();
+
+        let computerSelection = getComputerChoice();
+
+        playRound(playerSelection, computerSelection);
+
+        // If player wins score player + 1
+        switch (playRound(playerSelection, computerSelection))
+        {
+            case 'win':
+            {
+                ++scorePlayer;
+                console.log(`Round ${i + 1} out of ${maxScore}. Player score: ${scorePlayer} - Computer score: ${scoreComputer}.`);
+                break;
+            }
+        // If player loses score computer + 1
+            case 'lose':
+            {
+                ++scoreComputer;
+                console.log(`Round ${i + 1} out of ${maxScore}. Player score: ${scorePlayer} - Computer score: ${scoreComputer}.`);
+                break;
+            }
+        // If draw add nothing
+            case 'draw':
+            {
+                scorePlayer += 1;
+                scoreComputer += 1;
+                console.log(`Round ${i + 1} out of ${maxScore}. Player score: ${scorePlayer} - Computer score: ${scoreComputer}.`);
+            }
+        }
+    }
+    // Report winner
+    if (scorePlayer > scoreComputer)
+    {
+        console.log(`Player wins ${scorePlayer} to ${scoreComputer}`);
+    }
+    else if (scorePlayer < scoreComputer)
+    {
+        console.log(`Computer wins ${scoreComputer} to ${scorePlayer}`);
+    }
+    else 
+    {
+        console.log('The scores are equal, it\'s a draw!');
+    }
+}
+
+game();
