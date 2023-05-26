@@ -34,106 +34,66 @@ function getComputerChoice()
 // Compare two choices
 function playRound(playerSelection, computerSelection)
 {
-    let win = 'win';
-    let lose = 'lose';
-    let draw = 'draw';
+    let itsDraw = 'It\'s a draw.',
+        rockL = 'Rock loses to paper.',
+        rockW = 'Rock wins against scissor.',
+        paperL = 'Paper loses to scissors.',
+        paperW = 'Paper wins against rock.',
+        scissorL = 'Scissors lose against rock.',
+        scissorW = 'Scissors wins against paper.';
 
-    // If values are equal it's a draw
-    switch (playerSelection)
+    if (playerSelection === computerSelection)
     {
-        case computerSelection : 
-            console.log('It\'s a draw.');
-            return draw;
-
+        console.log(itsDraw);
+        return 'draw';
+    }
+    
     // If player selects rock
-        case 'rock' : 
-        {    
-            switch (computerSelection)
-            {
-                case 'paper' :
-                    console.log('Rock loses to paper.');
-                    return lose;
-                case 'scissors' :
-                    console.log('Rock wins against scissors.');
-                    return win;
-            }
-        }
-    // If player selects paper
-        case 'paper' :
+    else if (playerSelection === 'rock')
+    { 
+        switch (computerSelection)
         {
-            switch (computerSelection)
-            { 
-                case 'scissors':
-                    console.log('Paper loses to scissors.');
-                    return lose;
-                case 'rock' :
-                    console.log('Paper wins against rock.');
-                    return win;
-            }
+            case 'paper' :
+                console.log(rockL);
+                return 'lose';
+            default :
+                console.log(rockW);
+                return 'win';
         }
+    }
+        
+    // If player selects paper
+    else if (playerSelection === 'paper')
+    {
+        switch (computerSelection)
+        { 
+            case 'scissors':
+                console.log(paperL);
+                return 'lose';
+             default :
+                console.log(paperW);
+                return 'win';
+        }
+    }
 
     // If player selects scissors
-        case 'scissors' :
+    else
+    {
+        switch (computerSelection)
         {
-            switch (computerSelection)
-            {
-                case 'rock' :
-                    console.log('Scissors lose against rock.');
-                    return lose;
-                case 'paper' :
-                    console.log('Scissors wins against paper.');
-                    return win;
-            }
+            case 'rock' :
+                console.log(scissorL);
+                return 'lose';
+            default :
+                console.log(scissorW);
+                return 'win';
         }
     }
 }
 
 // Print winner in console
-//console.log(playRound(playerSelection, computerSelection));
-
-// Add function for best out of 5
-function game()
+function reportWinner(scorePlayer, scoreComputer)
 {
-    // Get score for two players
-    let scorePlayer = 0; 
-    let scoreComputer = 0;
-    let maxScore = 5;
-
-    // Repeat for 5 rounds
-    for (let i = 0; i < maxScore; i++)
-    {
-        let playerSelection = getPlayerChoice();
-
-        let computerSelection = getComputerChoice();
-
-        playRound(playerSelection, computerSelection);
-
-        // If player wins score player + 1
-        switch (playRound(playerSelection, computerSelection))
-        {
-            case 'win':
-            {
-                ++scorePlayer;
-                console.log(`Round ${i + 1} out of ${maxScore}. Player score: ${scorePlayer} - Computer score: ${scoreComputer}.`);
-                break;
-            }
-        // If player loses score computer + 1
-            case 'lose':
-            {
-                ++scoreComputer;
-                console.log(`Round ${i + 1} out of ${maxScore}. Player score: ${scorePlayer} - Computer score: ${scoreComputer}.`);
-                break;
-            }
-        // If draw add nothing
-            case 'draw':
-            {
-                scorePlayer += 1;
-                scoreComputer += 1;
-                console.log(`Round ${i + 1} out of ${maxScore}. Player score: ${scorePlayer} - Computer score: ${scoreComputer}.`);
-            }
-        }
-    }
-    // Report winner
     if (scorePlayer > scoreComputer)
     {
         console.log(`Player wins ${scorePlayer} to ${scoreComputer}`);
@@ -147,5 +107,52 @@ function game()
         console.log('The scores are equal, it\'s a draw!');
     }
 }
+
+// Add function for best out of 5
+function game()
+{
+    // Get score for two players
+    let scorePlayer = 0, 
+        scoreComputer = 0;
+    const maxScore = 5;
+
+    // Repeat for 5 rounds
+    for (let i = 0; i < maxScore; i++)
+    {
+        let playerSelection = getPlayerChoice(),
+            computerSelection = getComputerChoice();
+        
+        switch (playRound(playerSelection, computerSelection))
+        {
+            // If player wins score player + 1
+            case 'win':
+            {
+                ++scorePlayer;
+                console.log(`Round ${i + 1} out of ${maxScore}. Player score: ${scorePlayer} - Computer score: ${scoreComputer}.`);
+                break;
+            }
+            
+            // If player loses score computer + 1
+            case 'lose':
+            {
+                ++scoreComputer;
+                console.log(`Round ${i + 1} out of ${maxScore}. Player score: ${scorePlayer} - Computer score: ${scoreComputer}.`);
+                break;
+            }
+            
+            // If draw add nothing
+            default :
+            {
+                ++scorePlayer;
+                ++scoreComputer;
+                console.log(`Round ${i + 1} out of ${maxScore}. Player score: ${scorePlayer} - Computer score: ${scoreComputer}.`);
+            }
+        }
+    }
+
+    // Report winner
+    reportWinner(scorePlayer, scoreComputer);
+}
+
 
 game();
